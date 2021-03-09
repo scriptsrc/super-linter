@@ -19,9 +19,13 @@ function InvokeLintly() {
   LINTLY_FORMAT="{$1}" && shift
   LINTER_COMMAND_OUTPUT="${2}" && shift
 
+  echo "----<<<<INVOKING Invokelintly>>>>----"
+
   # Lintly will comment on the PR
   echo "$LINTER_COMMAND_OUTPUT" | lintly --format="${LINTLY_FORMAT}"
 
+  echo "$?"
+  echo "^^ exit code ^^"
 }
 
 function SupportsLintly() {
@@ -32,6 +36,8 @@ function SupportsLintly() {
   # Pull in the vars #
   ####################
   LANGUAGE="{$1}" && shift
+
+  echo "----<<<<INVOKING SupportsLintly>>>>----"
 
   [[ -v LINTLY_SUPPORT_ARRAY["${LANGUAGE}"] ]] && return 0
   return 1
