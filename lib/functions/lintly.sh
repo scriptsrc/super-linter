@@ -5,44 +5,6 @@
 ########### Super-Linter lintly Function(s) @scriptsrc #########################
 ################################################################################
 ################################################################################
-########################## FUNCTION CALLS BELOW ################################
-################################################################################
-################################################################################
-#### Function InvokeLintly #####################################################
-function InvokeLintly() {
-  # Call comes through as:
-  # InvokeLintly "${LINTLY_FORMAT}" "${LINTER_COMMAND_OUTPUT}"
-
-  ####################
-  # Pull in the vars #
-  ####################
-  LINTLY_FORMAT="{$1}" && shift
-  LINTER_COMMAND_OUTPUT="${2}" && shift
-
-  echo "----<<<<INVOKING Invokelintly>>>>----"
-
-  # Lintly will comment on the PR
-  echo "$LINTER_COMMAND_OUTPUT" | lintly --format="${LINTLY_FORMAT}"
-
-  echo "$?"
-  echo "^^ exit code ^^"
-}
-
-function SupportsLintly() {
-  # Call comes through as:
-  # SupportsLintly "${LANGUAGE}"
-
-  ####################
-  # Pull in the vars #
-  ####################
-  LANGUAGE="{$1}" && shift
-
-  echo "----<<<<INVOKING SupportsLintly>>>>----"
-
-  [[ -v LINTLY_SUPPORT_ARRAY["${LANGUAGE}"] ]] && return 0
-  return 1
-  
-}
 
 ##################################
 # Lintly language suppport array #
@@ -63,3 +25,50 @@ export LINTLY_SUPPORT_ARRAY                      # Workaround SC2034
 # LINTLY_SUPPORT_ARRAY['ANY']="gitleaks"
 # LINTLY_SUPPORT_ARRAY['CLOUDFORMATION_CFNNAG']="cfn-nag"
 
+########################## FUNCTION CALLS BELOW ################################
+################################################################################
+################################################################################
+#### Function InvokeLintly #####################################################
+function InvokeLintly() {
+  # Call comes through as:
+  # InvokeLintly "${LINTLY_FORMAT}" "${LINTER_COMMAND_OUTPUT}"
+
+  ####################
+  # Pull in the vars #
+  ####################
+  LINTLY_FORMAT="{$1}" && shift
+  LINTER_COMMAND_OUTPUT="${2}" && shift
+
+  echo "----<<<<INVOKING Invokelintly>>>>----"
+  echo "FORMAT: ${LINTLY_FORMAT}"
+  echo "OUTPUT: ${LINTER_COMMAND_OUTPUT}"
+  echo ""
+  echo "DONE DISPLAYING ARGUMENTS"
+
+  # Lintly will comment on the PR
+  echo "$LINTER_COMMAND_OUTPUT" | lintly --format="${LINTLY_FORMAT}"
+
+  echo "$?"
+  echo "^^ exit code ^^"
+}
+
+function SupportsLintly() {
+  # Call comes through as:
+  # SupportsLintly "${LANGUAGE}"
+
+  ####################
+  # Pull in the vars #
+  ####################
+  LANGUAGE="{$1}" && shift
+
+  echo "----<<<<INVOKING SupportsLintly>>>>----"
+
+  if [[ -v LINTLY_SUPPORT_ARRAY["${LANGUAGE}"] ]]; then
+    echo "${LANGUAGE} found inside ${LINTLY_SUPPORT_ARRAY}."
+    return 0
+  else
+    echo "${LANGUAGE} NOT found inside ${LINTLY_SUPPORT_ARRAY}."
+    return 1
+  fi
+  
+}
