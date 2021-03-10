@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 
 
-BASH_VERSION=`bash --version`
-echo $BASH_VERSION
-set -x
 ################################################################################
 ################################################################################
 ########### Super-Linter lintly Function(s) @scriptsrc #########################
@@ -40,7 +37,7 @@ function InvokeLintly() {
   ####################
   # Pull in the vars #
   ####################
-  LINTLY_FORMAT="{$1}" && shift
+  LINTLY_FORMAT="${1}" && shift
   LINTER_COMMAND_OUTPUT="${2}" && shift
 
   echo "----<<<<INVOKING Invokelintly>>>>----"
@@ -63,18 +60,21 @@ function SupportsLintly() {
   ####################
   # Pull in the vars #
   ####################
-  LANGUAGE="{$1}" && shift
+  LANGUAGE="${1}" && shift
 
   echo "----<<<<INVOKING SupportsLintly>>>>----"
 
   if [[ -v LINTLY_SUPPORT_ARRAY["${LANGUAGE}"] ]]; then
-    echo "${LANGUAGE} found inside ${LINTLY_SUPPORT_ARRAY}."
-    return 0
+    echo "${LANGUAGE} found inside LINTLY_SUPPORT_ARRAY."
+    true
   else
-    echo "${LANGUAGE} NOT found inside ${LINTLY_SUPPORT_ARRAY}."
-    return 1
+    echo "${LANGUAGE} NOT found inside LINTLY_SUPPORT_ARRAY."
+    false
   fi
-  
 }
 
-SupportsLintly "PYTHON_FLAKE8"
+if SupportsLintly "PYTHON_FLAKE8"; then
+  echo "YES"
+else
+  echo "NO"
+fi
