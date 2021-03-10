@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+
+BASH_VERSION=`bash --version`
+echo $BASH_VERSION
+set -x
 ################################################################################
 ################################################################################
 ########### Super-Linter lintly Function(s) @scriptsrc #########################
@@ -72,3 +76,5 @@ function SupportsLintly() {
   fi
   
 }
+
+SupportsLintly "PYTHON_FLAKE8"
