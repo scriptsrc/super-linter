@@ -37,8 +37,8 @@ function InvokeLintly() {
   ####################
   # Pull in the vars #
   ####################
-  LINTLY_FORMAT="${1}" && shift
-  LINTER_COMMAND_OUTPUT="${2}" && shift
+  LINTLY_FORMAT="${1}"
+  LINTER_COMMAND_OUTPUT="${2}"
 
   echo "----<<<<INVOKING Invokelintly>>>>----"
   echo "FORMAT: ${LINTLY_FORMAT}"
@@ -60,7 +60,7 @@ function SupportsLintly() {
   ####################
   # Pull in the vars #
   ####################
-  LANGUAGE="${1}" && shift
+  LANGUAGE="${1}"
 
   echo "----<<<<INVOKING SupportsLintly>>>>----"
 
